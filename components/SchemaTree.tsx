@@ -3,9 +3,6 @@
 import { useState } from 'react'
 import type { SchemaNode } from '../types'
 
-type SimpleField = SchemaNode
-type OneOfVariant = SchemaNode
-
 const TYPE_COLORS: Record<string, string> = {
   string: 'text-emerald-600 bg-emerald-50',
   integer: 'text-blue-600 bg-blue-50',
@@ -16,7 +13,7 @@ const TYPE_COLORS: Record<string, string> = {
 }
 
 interface SchemaTreeProps {
-  tree: SimpleField[] | null
+  tree: SchemaNode[] | null
 }
 
 export default function SchemaTree({ tree }: SchemaTreeProps) {
@@ -25,36 +22,26 @@ export default function SchemaTree({ tree }: SchemaTreeProps) {
   return (
     <div className="schema-tree-root">
       {tree.map((node, i) => (
-        <SchemaNodeRow key={i} node={node} depth={0} index={i} total={tree.length} />
+        <SchemaNodeRow key={i} node={node} depth={0} />
       ))}
     </div>
   )
 }
 
-function SchemaNodeRow({ node, depth, index, total }: { node: SimpleField; depth: number; index: number; total: number }) {
+function SchemaNodeRow({ node, depth }: { node: SchemaNode; depth: number }) {
   const [collapsed, setCollapsed] = useState(depth >= 3)
   const hasChildren = node.children && node.children.length > 0
   const hasVariants = node.variants && node.variants.length > 0
   const isExpandable = hasChildren || hasVariants
-  const isLast = index === total - 1
 
   const typeColor = TYPE_COLORS[node.type] || 'text-gray-500 bg-gray-50'
 
   return (
     <div className="schema-node">
       <div
-        className={`schema-node-row ${!isLast ? 'schema-node-has-next' : ''}`}
+        className="schema-node-row"
         style={{ paddingLeft: `${depth * 20}px` }}
       >
-        {depth > 0 && (
-          <span className="schema-node-connector">
-            <svg width="20" height="28" viewBox="0 0 20 28" className="flex-shrink-0">
-              <path d="M 0 0 L 10 0 L 10 28" fill="none" stroke="#d1d5db" strokeWidth="1.5" />
-              <path d="M 10 14 L 20 14" fill="none" stroke="#d1d5db" strokeWidth="1.5" />
-            </svg>
-          </span>
-        )}
-
         <div className="flex items-center gap-2 flex-1 min-w-0 py-1.5">
           {isExpandable ? (
             <button
@@ -108,7 +95,7 @@ function SchemaNodeRow({ node, depth, index, total }: { node: SimpleField; depth
       {isExpandable && !collapsed && (
         <div className="schema-node-children">
           {hasChildren && node.children!.map((child, i) => (
-            <SchemaNodeRow key={i} node={child} depth={depth + 1} index={i} total={node.children!.length} />
+            <SchemaNodeRow key={i} node={child} depth={depth + 1} />
           ))}
           {hasVariants && (
             <div className="schema-node-variants">
@@ -116,7 +103,7 @@ function SchemaNodeRow({ node, depth, index, total }: { node: SimpleField; depth
                 oneOf
               </div>
               {node.variants!.map((variant, i) => (
-                <SchemaNodeRow key={i} node={variant} depth={depth + 1} index={i} total={node.variants!.length} />
+                <SchemaNodeRow key={i} node={variant} depth={depth + 1} />
               ))}
             </div>
           )}
