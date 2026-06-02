@@ -48,6 +48,7 @@ export interface Endpoint {
   parameters: Parameter[]
   requestBody: RequestBody | null
   responses: Response[]
+  yamlLine?: number
 }
 
 export interface ApiDoc {

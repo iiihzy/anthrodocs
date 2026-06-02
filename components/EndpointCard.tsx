@@ -4,7 +4,7 @@ import { useState } from 'react'
 import type { Endpoint } from '../types'
 import { groupParamsByIn } from '../lib/utils'
 import ParametersTable from './ParametersTable'
-import ResponseBlock from './ResponseBlock'
+import JsonExample from './JsonExample'
 import SchemaTree from './SchemaTree'
 
 interface Props {
@@ -94,9 +94,11 @@ export default function EndpointCard({ endpoint: ep }: Props) {
                   {!resp.isEmpty && resp.schema && (
                     <div className="mb-2">
                       {resp.schemaTree && resp.schemaTree.length > 0 && (
-                        <SchemaTree tree={resp.schemaTree} />
+                        <>
+                          <SchemaTree tree={resp.schemaTree} />
+                          <JsonExample tree={resp.schemaTree} />
+                        </>
                       )}
-                      <ResponseBlock response={resp} />
                     </div>
                   )}
                 </div>

@@ -1,6 +1,6 @@
 import { readFileSync, existsSync } from 'fs'
 import { resolve } from 'path'
-import { parseSpecFromString } from '../../src/parser.js'
+import { parseSpecFromString } from '../lib/parser.js'
 import AppLayout from '../components/AppLayout'
 import type { ApiDoc } from '../types'
 
