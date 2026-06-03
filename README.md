@@ -37,7 +37,8 @@ export default async function DocsPage() {
   const res = await fetch('https://api.example.com/swagger.yaml', {
     next: { revalidate: 3600 },
   })
-  return <Anthrodocs initialDoc={parseSpecFromString(await res.text())} yaml={await res.text()} />
+  const yaml = await res.text()
+  return <Anthrodocs initialDoc={parseSpecFromString(yaml)} yaml={yaml} />
 }
 ```
 
@@ -77,7 +78,7 @@ import 'anthrodocs/styles.css'
 // tailwind.config.ts
 export default {
   content: [
-    './node_modules/anthrodocs/**/*.js',
+    './node_modules/anthrodocs/**/*.{js,mjs,cjs,ts,tsx}',
     // ...
   ],
 }
@@ -278,7 +279,7 @@ interface SecurityDef {
 
 ## 常见问题
 
-**样式不生效？** 确保已导入 `anthrodocs/styles.css` 且 Tailwind `content` 包含 `./node_modules/anthrodocs/**/*.js`。
+**样式不生效？** 确保已导入 `anthrodocs/styles.css` 且 Tailwind `content` 包含 `./node_modules/anthrodocs/**/*.{js,mjs,cjs,ts,tsx}`。
 
 **YAML 文件找不到？** `createAnthrodocsPage` 的路径相对于 `process.cwd()`（项目根目录），不是页面文件所在目录。
 

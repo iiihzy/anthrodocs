@@ -1,6 +1,6 @@
 {
   "name": "anthrodocs",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Redoc-style API documentation renderer for Next.js — SSR-friendly",
   "license": "MIT",
   "type": "module",
