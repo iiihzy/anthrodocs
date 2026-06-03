@@ -3,7 +3,7 @@
 import { useRef, useState, useMemo, useCallback, useEffect } from 'react'
 import type { ApiDoc } from '../types'
 import { findEndpointLines } from '../lib/utils'
-import { generateMarkdownFromDoc } from '../lib/copy-md'
+import { generateMarkdownFromDoc, generatePageText } from '../lib/copy-md'
 import YamlViewer from './YamlViewer'
 import DocPreview from './DocPreview'
 import SidebarNav from './SidebarNav'
@@ -19,7 +19,6 @@ export default function AppLayout({ initialDoc, yaml }: Props) {
   const [yamlHighlightLine, setYamlHighlightLine] = useState<number | null>(null)
   const resizing = useRef(false)
   const startX = useRef(0)
-  const previewRef = useRef<HTMLDivElement>(null)
   const [copyOpen, setCopyOpen] = useState(false)
   const [copyFeedback, setCopyFeedback] = useState('')
 
@@ -38,9 +37,8 @@ export default function AppLayout({ initialDoc, yaml }: Props) {
   }, [copyOpen])
 
   const copyPage = useCallback(async () => {
-    const el = previewRef.current
-    if (!el) return
-    const text = el.textContent || ''
+    if (!initialDoc) return
+    const text = generatePageText(initialDoc)
     try {
       await navigator.clipboard.writeText(text)
       setCopyFeedback('已复制页面内容')
@@ -48,7 +46,7 @@ export default function AppLayout({ initialDoc, yaml }: Props) {
       setCopyFeedback('复制失败')
     }
     setCopyOpen(false)
-  }, [])
+  }, [initialDoc])
 
   const copyMarkdown = useCallback(async () => {
     if (!initialDoc) return
@@ -155,7 +153,7 @@ export default function AppLayout({ initialDoc, yaml }: Props) {
           onMouseDown={onResizeStart}
         />
 
-        <div ref={previewRef} className="flex-1 min-w-0 overflow-hidden flex">
+        <div className="flex-1 min-w-0 overflow-hidden flex">
           {initialDoc ? (
             <>
               <DocPreview doc={initialDoc} onScroll={setPreviewScrollTop} />
