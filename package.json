@@ -1,28 +1,27 @@
 {
   "name": "anthrodocs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Redoc-style API documentation renderer for Next.js — SSR-friendly",
   "license": "MIT",
   "type": "module",
-  "main": "./anthrodocs.ts",
-  "types": "./anthrodocs.ts",
+  "main": "./dist/anthrodocs.js",
+  "types": "./dist/anthrodocs.d.ts",
   "exports": {
-    ".": "./anthrodocs.ts",
-    "./styles.css": "./styles.css",
-    "./components/*": "./components/*"
+    ".": {
+      "import": "./dist/anthrodocs.js",
+      "types": "./dist/anthrodocs.d.ts"
+    },
+    "./styles.css": "./dist/styles.css"
   },
   "files": [
-    "anthrodocs.ts",
-    "create-page.tsx",
-    "styles.css",
-    "components/",
-    "lib/",
-    "types.ts"
+    "dist/"
   ],
   "scripts": {
     "dev": "next dev -p 3333",
     "build": "next build",
-    "start": "next start -p 3333"
+    "build:lib": "tsup",
+    "start": "next start -p 3333",
+    "prepublishOnly": "npm run build:lib"
   },
   "peerDependencies": {
     "next": "^14 || ^15",
@@ -42,6 +41,7 @@
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "tailwindcss": "^3.4.0",
+    "tsup": "^8.5.1",
     "typescript": "^5.4.0"
   }
 }

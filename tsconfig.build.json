@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "incremental": false,
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false
+  },
+  "include": ["anthrodocs.ts", "create-page.tsx", "types.ts", "components/**/*.tsx", "lib/**/*.ts", "lib/**/*.js"]
+}
