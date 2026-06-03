@@ -60,13 +60,19 @@ export default async function DocsPage() {
 }
 ```
 
-### 方式 4: 多页面路由
+### 方式 4: 多版本文档
 
-如果需要为不同版本的 API 文档创建多个路由：
+为不同版本的 API 分别创建路由：
 
-```tsx
-// app/docs/v1/page.tsx
-export { default } from 'app/docs/v2/page' // 或使用 createAnthrodocsPage
+```
+app/
+  docs/
+    v1/
+      swagger.yaml
+      page.tsx      → createAnthrodocsPage('docs/v1/swagger.yaml')
+    v2/
+      swagger.yaml
+      page.tsx      → createAnthrodocsPage('docs/v2/swagger.yaml')
 ```
 
 ## 样式配置
@@ -80,13 +86,11 @@ import 'anthrodocs/styles.css'
 
 ### 配置 Tailwind 扫描路径
 
-确保 `tailwind.config.ts` 的 `content` 包含组件文件：
-
 ```ts
 // tailwind.config.ts
 export default {
   content: [
-    './node_modules/anthrodocs/**/*.{ts,tsx}',
+    './node_modules/anthrodocs/**/*.js',
     // ... 你的其他路径
   ],
 }
@@ -94,7 +98,7 @@ export default {
 
 ### 根布局
 
-Anthrodocs 内部使用 `h-screen overflow-hidden` 锁定视口。页面组件会自动处理布局，无需额外配置：
+Anthrodocs 内部使用 `h-screen overflow-hidden` 锁定视口，页面组件会自动处理布局，无需额外配置：
 
 ```tsx
 // app/layout.tsx
@@ -144,7 +148,7 @@ createAnthrodocsPage('docs/api.yaml')
 
 ### 独立组件
 
-如需自定义布局，可单独导入组件：
+如需自定义布局，可单独导入：
 
 ```ts
 import {
@@ -170,7 +174,7 @@ const lineMap = findEndpointLines(yaml, doc.endpoints)
 const grouped = groupParamsByIn(endpoint.parameters)
 ```
 
-### 类型导出
+### 类型
 
 ```ts
 import type {
@@ -207,11 +211,15 @@ import type {
 
 ### 报错 "Cannot find module 'anthrodocs'"？
 
-检查 `node_modules` 中是否已安装。如果使用 pnpm，可能需要配置 `.npmrc`：
+检查 `node_modules` 中是否已安装。如果使用 pnpm，需要配置 `.npmrc`：
 
 ```
 public-hoist-pattern[]=anthrodocs
 ```
+
+### 包体积是否较大？
+
+发布的包仅包含 3 个编译后的文件（~48 KB 解压后），不含 TypeScript 源文件和依赖。运行时依赖仅有 `js-yaml`，由你的项目自行安装。
 
 ## 开发
 
@@ -220,13 +228,18 @@ git clone https://github.com/iiihzy/anthrodocs.git
 cd anthrodocs
 npm install
 npm run dev     # http://localhost:3333
-npm run build   # 生产构建
 ```
 
-默认读取项目根目录 `../swagger.yaml`。可通过环境变量指定：
+默认读取项目根目录 `../swagger.yaml`，可通过环境变量指定：
 
 ```bash
 SWAGGER_FILE=/path/to/your/swagger.yaml npm run dev
+```
+
+构建发布版本：
+
+```bash
+npm run build:lib   # tsup 编译 → dist/
 ```
 
 ## License
