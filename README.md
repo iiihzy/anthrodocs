@@ -10,6 +10,8 @@ Redoc 风格的 API 文档渲染组件 — 专为 Next.js SSR 设计。
 npm install anthrodocs
 ```
 
+[![npm version](https://img.shields.io/npm/v/anthrodocs)](https://www.npmjs.com/package/anthrodocs)
+
 依赖 `next` / `react` / `react-dom`（作为 peerDependencies，你的 Next.js 项目已自带）。
 
 ## 快速开始
