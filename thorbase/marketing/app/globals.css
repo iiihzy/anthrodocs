@@ -1,0 +1,370 @@
+@source "../../node_modules/anthrodocs/dist/";
+@import "tailwindcss";
+@source "../**/*.{ts,tsx}";
+
+:root {
+  --background: #FFFEF5;
+  --foreground: #FFFEF5;
+  --primary: #B3001B;
+  --primary-foreground: #FFFEF5;
+  --secondary: #00205c;
+  --secondary-foreground: #FFFEF5;
+  --card: #FFFEF5;
+  --model-card-header: #27272B;
+  --model-card: #18181C;
+  --model-foreground: #FFFEF5;
+  --border: #FFFEF5;
+  --brand-surface: #252524;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-rubik-mono: var(--font-rubik-mono-one), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-model-foreground: var(--model-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-card: var(--card);
+  --color-card-header: var(--model-card-header);
+  --color-border: var(--border);
+  --color-brand-surface: var(--brand-surface);
+  --color-model-card: var(--model-card);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* ─── Sheet animations ──────────────────────────── */
+@keyframes sheet-slide-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes sheet-slide-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+@keyframes overlay-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes overlay-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+[data-state="open"].sheet-overlay {
+  animation: overlay-fade-in 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+[data-state="closed"].sheet-overlay {
+  animation: overlay-fade-out 150ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+[data-state="open"].sheet-content {
+  animation: sheet-slide-in 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+[data-state="closed"].sheet-content {
+  animation: sheet-slide-out 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - var(--gap))); }
+}
+
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(-100% - var(--gap))); }
+}
+
+.animate-marquee {
+  animation: marquee var(--duration) linear infinite;
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical var(--duration) linear infinite;
+}
+
+/* ─── Hero 2.5D Isometric Visual ──────────────────────────── */
+.hero-visual-container {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1200px;
+  overflow: hidden;
+}
+
+.hero-visual-container .bg-grid-lines {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background-image:
+    linear-gradient(to right, rgba(0, 32, 92, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 32, 92, 0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+  transform: rotateX(60deg) rotateZ(-45deg);
+  z-index: 0;
+}
+
+/* ─── 电路走线层 ──────────────────────────── */
+.circuit-traces {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotateX(60deg) rotateZ(-45deg);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.circuit-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* 走线主体 */
+.circuit-lines path {
+  fill: none;
+  stroke: rgba(0, 32, 92, 0.22);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 静态装饰走线（更淡，无电子） */
+.circuit-static-traces path {
+  fill: none;
+  stroke: rgba(0, 32, 92, 0.08);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 焊盘节点 */
+.circuit-pads circle {
+  fill: rgba(0, 32, 92, 0.22);
+  stroke: rgba(0, 32, 92, 0.12);
+  stroke-width: 1;
+}
+
+/* 过孔 */
+.circuit-vias circle {
+  fill: none;
+  stroke: rgba(0, 32, 92, 0.25);
+  stroke-width: 1.5;
+}
+
+/* 入口脉冲点呼吸动画 */
+.circuit-entry-pulse circle {
+  transition: r 0.3s ease;
+}
+
+.isometric-stack {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  transform-style: preserve-3d;
+  transform: rotateX(60deg) rotateZ(-45deg);
+  animation: floatStack 6s ease-in-out infinite;
+  z-index: 10;
+}
+
+.iso-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 32, 92, 0.12);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  transition: transform 0.5s ease;
+}
+
+.iso-layer-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.iso-layer-1 .logo-wrapper img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.iso-layer-4 {
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow:
+    -20px 20px 40px rgba(0, 32, 92, 0.06),
+    -40px 40px 80px rgba(0, 32, 92, 0.03);
+}
+
+/* Layer content: mini terminal / card look */
+.layer-content {
+  padding: 16px;
+}
+
+.layer-dot-row {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.dot-green { background: #22c55e; }
+.dot-yellow { background: #eab308; }
+.dot-red { background: #ef4444; }
+
+.layer-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.layer-line {
+  height: 4px;
+  background: rgba(0, 32, 92, 0.1);
+  border-radius: 2px;
+}
+
+.layer-label {
+  margin-left: 6px;
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(0, 32, 92, 0.35);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-family: var(--font-mono), monospace;
+}
+
+/* Image grid: 2×2 cells */
+.layer-image-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.layer-image-cell {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, rgba(0, 32, 92, 0.06), rgba(179, 0, 27, 0.06));
+  border-radius: 3px;
+  border: 1px solid rgba(0, 32, 92, 0.08);
+  max-height: 50px;
+}
+
+/* Code block */
+.layer-code {
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  line-height: 1.6;
+  color: rgba(0, 32, 92, 0.55);
+  white-space: pre;
+}
+
+.code-keyword { color: #B3001B; font-weight: 600; }
+.code-var { color: #00205c; }
+.code-string { color: #0e7a0d; }
+.code-fn { color: #7c3aed; }
+
+/* 悬浮动画 */
+@keyframes floatStack {
+  0%   { transform: rotateX(60deg) rotateZ(-45deg) translateZ(0px); }
+  50%  { transform: rotateX(60deg) rotateZ(-45deg) translateZ(12px); }
+  100% { transform: rotateX(60deg) rotateZ(-45deg) translateZ(0px); }
+}
+
+/* 鼠标悬停时层间距展开 */
+.isometric-stack:hover .iso-layer-1 { transform: translateZ(130px); }
+.isometric-stack:hover .iso-layer-2 { transform: translateZ(80px); }
+.isometric-stack:hover .iso-layer-3 { transform: translateZ(30px); }
+.isometric-stack:hover .iso-layer-4 { transform: translateZ(-20px); }
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .hero-visual-container {
+    height: 300px;
+  }
+  .isometric-stack {
+    width: 150px;
+    height: 150px;
+  }
+  .iso-layer-1 .logo-wrapper img {
+    width: 36px;
+    height: 36px;
+  }
+  .layer-content {
+    padding: 12px;
+  }
+  .dot {
+    width: 5px;
+    height: 5px;
+  }
+  .layer-line {
+    height: 3px;
+  }
+}
+
+  /* diagram primitives — match the hero's CRT grid feel */
+  .pillar-card{
+    background: rgba(0,32,92,0.02);
+    border: 1px solid rgba(0,32,92,0.14);
+  }
+  .pillar-card::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(to right, rgba(0,32,92,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0,32,92,0.05) 1px, transparent 1px);
+    background-size: 22px 22px;
+    pointer-events:none;
+    mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+  }
+
+  /* subtle live blink for diagram accents */
+  @keyframes hv-blink{
+    0%,100%{opacity:0.35}
+    50%{opacity:1}
+  }
+  .accent-blink{ animation: hv-blink 2.4s ease-in-out infinite; }
+
+  /* request-flow dash motion */
+  @keyframes flow-dash{
+    to { stroke-dashoffset: -24; }
+  }
+  .flow-anim{ stroke-dasharray: 4 3; animation: flow-dash 2.5s linear infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .accent-blink, .flow-anim { animation: none; }
+  }
+
+@import "anthrodocs/styles.css";

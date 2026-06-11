@@ -1,0 +1,121 @@
+---
+title: API Reference
+description: Complete REST API endpoint documentation
+group: API Reference
+order: 1
+---
+
+# API Reference
+
+TokenGO provides an OpenAI-compatible REST API. You can use any OpenAI SDK or make direct HTTP requests.
+
+## Base Information
+
+**Base URL**: `https://api.thorbase.com/v1`
+
+**Authentication**: Bearer Token
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## Endpoints
+
+### Chat Completions
+
+```http
+POST /chat/completions
+```
+
+**Request Body**:
+
+```json
+{
+  "model": "gpt-4o",
+  "messages": [
+    { "role": "system", "content": "You are a helpful assistant." },
+    { "role": "user", "content": "Hello!" }
+  ],
+  "temperature": 0.7,
+  "max_tokens": 150,
+  "stream": false
+}
+```
+
+**Response**:
+
+```json
+{
+  "id": "chatcmpl-123",
+  "object": "chat.completion",
+  "created": 1677652288,
+  "model": "gpt-4o",
+  "choices": [{
+    "index": 0,
+    "message": {
+      "role": "assistant",
+      "content": "Hello! How can I help you today?"
+    },
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "prompt_tokens": 9,
+    "completion_tokens": 12,
+    "total_tokens": 21
+  }
+}
+```
+
+### List Models
+
+```http
+GET /models
+```
+
+**Response**:
+
+```json
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "gpt-4o",
+      "object": "model",
+      "created": 1686935002,
+      "owned_by": "openai"
+    }
+  ]
+}
+```
+
+### Create Embedding
+
+```http
+POST /embeddings
+```
+
+**Request Body**:
+
+```json
+{
+  "model": "text-embedding-3-small",
+  "input": "The food was delicious and the service..."
+}
+```
+
+## Error Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Success |
+| 400 | Invalid request parameters |
+| 401 | Authentication failed |
+| 429 | Rate limit exceeded or insufficient quota |
+| 500 | Internal server error |
+
+## SDKs
+
+TokenGO is fully compatible with the OpenAI SDK. Just change the `base_url`:
+
+- **Python**: `pip install openai` — set `base_url="https://api.thorbase.com/v1"`
+- **TypeScript**: `npm install openai` — set `baseURL: "https://api.thorbase.com/v1"`
+- **Go / Java / Ruby**: Use any OpenAI-compatible client with the base URL above

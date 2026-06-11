@@ -1,0 +1,103 @@
+---
+title: Billing
+description: Manage your balance, top up, and track spending on TokenGO
+group: Guides
+order: 1
+---
+
+# Billing
+
+The Billing page is your financial dashboard. It shows your account balance, spending trends, and provides multiple ways to top up.
+
+## Account Balance
+
+When you open the **Billing** page, you'll see four summary cards at the top:
+
+| Card | Description |
+|------|-------------|
+| **Remaining Balance** | Your current account balance in USD |
+| **Used Balance** | Total amount spent to date in USD |
+| **Requests (24h)** | Number of API requests made in the last 24 hours |
+| **Tokens (24h)** | Total tokens consumed in the last 24 hours |
+
+## Topping Up
+
+### Stripe Payment
+
+1. Click the **Top Up** button on the Billing page
+2. Choose a preset amount: $10, $20, $50, $100, $200, or $500
+3. Or enter a custom amount (subject to minimum and maximum limits)
+4. You'll be redirected to Stripe to complete the payment
+5. After a successful payment, refresh the page to see your updated balance
+
+### Redemption Code
+
+If you have a redemption code (gift card or promotional code):
+
+1. Click the **Top Up** button
+2. Switch to the **Redemption Code** tab
+3. Enter your code and click **Redeem**
+4. The corresponding amount will be added to your balance immediately
+
+## Affiliate Program
+
+Earn credits by referring others to TokenGO:
+
+### Get Your Referral Link
+
+1. On the Billing page, find the **Affiliate Program** section
+2. Copy your unique referral link
+3. Share it with others — when they sign up using your link, they become your referral
+
+### Track Referrals
+
+| Metric | Description |
+|--------|-------------|
+| **Referrals** | Number of people who signed up using your link |
+| **Pending Credits** | Referral credits waiting to be transferred to your balance |
+| **Total Earned** | Cumulative credits earned from referrals |
+
+### Transfer Credits
+
+Click **Transfer to Balance** to move pending referral credits into your main account balance. This is a manual action — credits are not transferred automatically.
+
+## Performance Metrics
+
+The Billing page also displays 24-hour performance metrics:
+
+| Metric | Description |
+|--------|-------------|
+| **Avg TPM** | Average tokens per minute over the last 24 hours |
+| **Avg RPM** | Average requests per minute over the last 24 hours |
+| **Peak TPM** | Highest tokens per minute recorded in the last 24 hours |
+| **Avg Tokens/Request** | Average number of tokens consumed per request |
+
+## Usage Trends
+
+The usage trend chart shows your consumption over the last 24 hours, broken down by hour. You can switch between three views:
+
+- **Quota** — Spending in USD per hour
+- **Tokens** — Token consumption per hour
+- **Requests** — Number of requests per hour
+
+Below the chart, the **Top Models by Quota** section ranks your most-used models by cost. Expand any model to see a detailed breakdown.
+
+## Billing Calculation
+
+TokenGO charges based on actual token consumption:
+
+```
+Cost = (Prompt Tokens / 1,000,000 x Input Price) + (Completion Tokens / 1,000,000 x Output Price)
+```
+
+If your API key is assigned to a group with a ratio other than 1.0, the final cost is multiplied by the group ratio:
+
+```
+Final Cost = Cost x Group Ratio
+```
+
+Some models also support **cache pricing** — cached input tokens are billed at a lower rate. Check the [Model Hub](/docs/user-guide/model-hub) for each model's input, output, and cache prices.
+
+---
+
+See [Usage Logs](/docs/user-guide/usage-logs) for a detailed breakdown of individual requests and their costs.

@@ -1,0 +1,1 @@
+export { parseSpecFromString } from './lib/parser-string.js'

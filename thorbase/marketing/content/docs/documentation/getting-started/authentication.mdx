@@ -1,0 +1,67 @@
+---
+title: Authentication
+description: Learn about TokenGO authentication methods and security best practices
+group: Documentation
+order: 3
+---
+
+# Authentication
+
+TokenGO uses API keys for authentication. Every API request must include your API key in the Authorization header.
+
+## API Key Format
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## Creating an API Key
+
+1. Log in to the [TokenGO Console](https://console.thorbase.com)
+2. Navigate to **API Keys** in the sidebar
+3. Click **Create Key**
+4. Enter a name and configure quota settings
+5. Set an expiration date or toggle **Never Expire**
+6. Click **Create** — copy the key immediately, it will only be shown once
+
+## API Key Settings
+
+When creating an API key, you can configure:
+
+| Setting | Description |
+|---------|-------------|
+| **Name** | A descriptive label for the key (e.g., `production`, `staging`) |
+| **Quota** | Set unlimited or a specific token budget |
+| **Expiration** | Set a date or choose never expire |
+| **Group** | Assign to an access group for model permissions and pricing ratios |
+
+## Security Best Practices
+
+- **Never commit API keys to code repositories** — use environment variables instead
+- **Rotate keys regularly** — create a new key, update your application, then delete the old one
+- **Use separate keys per environment** — different keys for development, staging, and production
+- **Set quotas** — limit key spending to prevent unexpected charges
+- **Set expiration dates** — automatically disable keys after a set period
+- **Revoke compromised keys immediately** — delete any key that may have been exposed
+
+## Error Handling
+
+Authentication failures return a 401 status code:
+
+```json
+{
+  "error": {
+    "type": "authentication_error",
+    "message": "Invalid API key provided"
+  }
+}
+```
+
+Common causes:
+- Missing or malformed Authorization header
+- Expired or deleted API key
+- Insufficient account balance
+
+---
+
+See [Quick Start](/docs/getting-started/quickstart) for step-by-step instructions on creating your first API key.

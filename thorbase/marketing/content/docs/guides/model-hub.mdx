@@ -1,0 +1,114 @@
+---
+title: Model Hub
+description: Browse, compare, and integrate models available on TokenGO
+group: Guides
+order: 2
+---
+
+# Model Hub
+
+The Model Hub (also called Model Marketplace) is where you browse all available models, compare pricing, and get ready-to-use integration code.
+
+## Browsing Models
+
+1. Navigate to **Model Hub** in the sidebar (or **Pricing**)
+2. Browse the model card grid — each card shows the model name, provider, description, tags, and pricing
+
+### Searching and Filtering
+
+- **Search**: Type a keyword in the search bar to filter by model name, description, or tags
+- **Provider Filter**: Use the provider dropdown to show only models from a specific vendor (e.g., OpenAI, Anthropic, Google)
+- **Group Filter**: Filter by access group if your account has group-based model access
+- **Sort**: Sort models by name in ascending or descending order
+
+### Model Card Information
+
+Each model card displays:
+
+| Field | Description |
+|-------|-------------|
+| **Model Name** | The identifier used in API requests (e.g., `gpt-4o-mini`) |
+| **Provider** | The company that created the model |
+| **Description** | A brief summary of the model's capabilities |
+| **Tags** | Labels like `vision`, `streaming`, `tools` indicating supported features |
+| **Input Price** | Cost per million input tokens |
+| **Output Price** | Cost per million output tokens |
+| **Cache Price** | Cost per million cached input tokens (if supported) |
+
+## Model Detail Page
+
+Click any model card to open its detail page.
+
+### Overview
+
+The detail page provides a comprehensive view of the model:
+
+- **Model name and provider** at the top
+- **Tags** showing supported capabilities
+- **Copy** button to quickly copy the model name for use in your code
+
+### Description
+
+A more detailed description of the model's capabilities, use cases, and limitations.
+
+### Pricing
+
+The pricing section shows the exact per-million-token rates for:
+
+- **Input tokens** — Tokens in your prompt
+- **Output tokens** — Tokens in the model's response
+- **Cache tokens** — Tokens served from cache (lower price, where applicable)
+
+### Integration Code
+
+The detail page provides ready-to-use code examples in multiple languages:
+
+- Python
+- TypeScript
+- Java
+- Go
+- cURL
+
+You can also switch between API types:
+
+- **Chat Completions** — For conversational models (most common)
+- **Text Completions** — For legacy completion-style models
+
+Copy the code, replace `YOUR_API_KEY` with your actual key, and you're ready to go.
+
+## Understanding Pricing
+
+Model prices on TokenGO are calculated using a ratio system:
+
+- **Input Price** is derived from the model's base ratio
+- **Output Price** = Input Price x Completion Ratio (varies by model)
+- **Cache Price** = Input Price x Cache Ratio (where supported)
+
+All prices are displayed in **USD per million tokens** on the Model Hub, so you can directly compare costs across models.
+
+### Pricing Example
+
+If a model shows:
+- Input: $5.00/1M tokens
+- Output: $15.00/1M tokens
+
+Then a request using 1,000 input tokens and 500 output tokens would cost:
+
+```
+(1,000 / 1,000,000 x $5.00) + (500 / 1,000,000 x $15.00) = $0.005 + $0.0075 = $0.0125
+```
+
+## Choosing the Right Model
+
+| Use Case | Recommended Models |
+|----------|-------------------|
+| General chat & Q&A | GPT-4o mini, Claude 3.5 Haiku |
+| Complex reasoning | GPT-4o, Claude 3.5 Sonnet, DeepSeek R1 |
+| Code generation | Claude 3.5 Sonnet, GPT-4o |
+| Long document processing | Gemini 1.5 Pro |
+| Cost-sensitive applications | GPT-4o mini, Gemini 1.5 Flash |
+| Vision / image understanding | GPT-4o, Claude 3.5 Sonnet |
+
+---
+
+Try any model in the [Playground](/docs/user-guide/playground) before integrating it into your application.

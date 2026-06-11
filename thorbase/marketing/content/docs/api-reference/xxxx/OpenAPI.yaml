@@ -1,0 +1,96 @@
+openapi: "3.0.0"
+info:
+  title: Uber API
+  description: |
+    # Welcome to the Uber API
+      
+    Move your app forward with the **Uber API**. This API allows you to integrate Uber's global transportation network into your application, enabling powerful features like:
+    - **Product Discovery**: Find available ride types at specific locations.
+    - **Price Estimation**: Get estimated fares for upcoming trips.
+    - **Ride Requesting**: Seamlessly book rides for your users.
+    
+    > **Note**: Please ensure you have a valid OAuth 2.0 token or API key and adhere to our [Rate Limits](https://developer.uber.com/docs/ride-references/rate-limits) to maintain optimal performance.
+  version: "1.0.0"
+
+servers:
+  - url: https://api.uber.com/v1
+
+paths:
+ /products:
+   get:
+     summary: Product Types
+     description: |
+        ## Get Product Types
+        
+        The `Products` endpoint returns information about the Uber products (e.g., UberX, UberBlack, UberPOOL) offered at a given geographic location. 
+        
+        ### Use Cases
+        - Displaying available ride options to a user based on their current GPS coordinates.
+        - Checking if a specific service (like UberXL) is available in a target city before prompting the user.
+        
+        ### Response Details
+        The response includes an array of `Product` objects, each containing details such as:
+        - `product_id`: The unique identifier used for subsequent API calls (e.g., price estimates).
+        - `display_name`: The localized, user-friendly name of the product.
+        - `capacity`: The maximum number of passengers the vehicle can accommodate.
+     parameters:
+       - name: latitude
+         in: query
+         description: Latitude component of location
+         required: true
+         schema:
+           type: number
+           format: double
+       - name: longitude
+         in: query
+         description: Longitude component of location
+         required: true
+         schema:
+           type: number
+           format: double
+     responses:
+       '200':
+         description: An array of products
+         content:
+           application/json:
+             schema:
+               $ref: "#/components/schemas/ProductList"
+       default:
+         description: Unexpected error
+         content:
+           application/json:
+             schema:
+               $ref: "#/components/schemas/Error"
+components:
+ schemas:
+   Product:
+     properties:
+       product_id:
+         type: string
+         description: Unique identifier representing a specific product for a given latitude & longitude
+       description:
+         type: string
+         description: Description of product
+       display_name:
+         type: string
+         description: Display name of product
+       capacity:
+         type: integer
+         description: Capacity of product
+       image:
+         type: string
+         description: Image URL representing the product
+   ProductList:
+     properties:
+       products:
+         type: array
+         items:
+           $ref: "#/components/schemas/Product"
+   Error:
+     properties:
+       code:
+         type: string
+       message:
+         type: string
+       fields:
+         type: string

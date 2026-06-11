@@ -11,16 +11,27 @@ import SidebarNav from './SidebarNav'
 interface Props {
   initialDoc: ApiDoc | null
   yaml: string
+  fileNames?: string[]
+  activeFile?: string
+  onSwitchFile?: (fileName: string) => void
 }
 
-export default function AppLayout({ initialDoc, yaml }: Props) {
+const MIN_YAML_WIDTH = 400
+
+type LeftMode = 'source' | 'files'
+
+export default function AppLayout({ initialDoc, yaml, fileNames, activeFile, onSwitchFile }: Props) {
   const [previewScrollTop, setPreviewScrollTop] = useState(0)
-  const [leftWidth, setLeftWidth] = useState(300)
+  const [leftWidth, setLeftWidth] = useState(400)
+  const [leftMode, setLeftMode] = useState<LeftMode>('source')
   const [yamlHighlightLine, setYamlHighlightLine] = useState<number | null>(null)
   const resizing = useRef(false)
   const startX = useRef(0)
   const [copyOpen, setCopyOpen] = useState(false)
   const [copyFeedback, setCopyFeedback] = useState('')
+
+  const hasFiles = fileNames && fileNames.length > 1
+  const label = (name: string) => name.replace(/\.ya?ml$/, '')
 
   useEffect(() => {
     if (!copyFeedback) return
@@ -29,7 +40,7 @@ export default function AppLayout({ initialDoc, yaml }: Props) {
   }, [copyFeedback])
 
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
+    function handleClickOutside() {
       if (copyOpen) setCopyOpen(false)
     }
     document.addEventListener('click', handleClickOutside)
@@ -79,7 +90,7 @@ export default function AppLayout({ initialDoc, yaml }: Props) {
     const onMove = (ev: MouseEvent) => {
       if (!resizing.current) return
       ev.preventDefault()
-      setLeftWidth(Math.max(300, Math.min(800, ev.clientX - startX.current)))
+      setLeftWidth(Math.max(MIN_YAML_WIDTH, Math.min(800, ev.clientX - startX.current)))
     }
     const onUp = () => {
       resizing.current = false
@@ -92,18 +103,22 @@ export default function AppLayout({ initialDoc, yaml }: Props) {
     document.addEventListener('mouseup', onUp)
   }
 
+  const handleFileSelect = (name: string) => {
+    onSwitchFile?.(name)
+    setLeftMode('source')
+  }
+
   return (
-    <div className="flex flex-1 overflow-hidden">
-      <header className="h-12 bg-white border-b border-gray-200 flex items-center px-4 flex-shrink-0 fixed top-0 left-0 right-0 z-20">
-        <h1 className="text-sm font-semibold text-gray-800">Anthrodocs</h1>
-        <span className="text-xs text-gray-400 ml-2">API 文档</span>
+    <div className="flex flex-1 overflow-hidden min-h-0">
+      <header className="h-9 bg-white border-b border-black/10 flex items-center px-3 flex-shrink-0">
+        <span className="text-xs text-black/40 font-mono">{activeFile}</span>
         <div className="flex-1" />
         {copyFeedback && (
-          <span className="text-xs text-green-600 mr-3">{copyFeedback}</span>
+          <span className="text-xs text-black/50 mr-3">{copyFeedback}</span>
         )}
         <div className="relative">
           <button
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-50 border border-gray-200 rounded-md hover:bg-gray-100 transition-colors"
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-black/60 bg-black/[0.02] border border-black/10 rounded hover:bg-black/5 transition-colors"
             onClick={(e) => { e.stopPropagation(); setCopyOpen(!copyOpen) }}
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -116,21 +131,21 @@ export default function AppLayout({ initialDoc, yaml }: Props) {
             </svg>
           </button>
           {copyOpen && (
-            <div className="absolute right-0 top-full mt-1 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-30 py-1">
+            <div className="absolute right-0 top-full mt-1 w-44 bg-white border border-black/10 rounded shadow-lg z-30 py-1">
               <button
-                className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                className="w-full text-left px-3 py-2 text-sm text-black/70 hover:bg-black/5 flex items-center gap-2"
                 onClick={(e) => { e.stopPropagation(); copyPage() }}
               >
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-black/40" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                   <path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1M8 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M8 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m0 0h2a2 2 0 0 1 2 2v3m2 4H10m0 0 3-3m-3 3 3 3" />
                 </svg>
                 Copy page
               </button>
               <button
-                className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                className="w-full text-left px-3 py-2 text-sm text-black/70 hover:bg-black/5 flex items-center gap-2"
                 onClick={(e) => { e.stopPropagation(); copyMarkdown() }}
               >
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-black/40" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                   <path d="M4 6h16M4 12h16M4 18h7" />
                 </svg>
                 Copy as markdown
@@ -140,23 +155,73 @@ export default function AppLayout({ initialDoc, yaml }: Props) {
         </div>
       </header>
 
-      <div className="flex flex-1 mt-12 overflow-hidden">
-        <div className="flex-shrink-0 border-r border-gray-200 bg-white flex flex-col overflow-hidden" style={{ width: leftWidth }}>
-          <div className="px-4 py-2 bg-white border-b border-gray-100 flex-shrink-0">
-            <span className="text-xs text-gray-400 font-medium">YAML 源码</span>
+      <div className="flex flex-1 overflow-hidden min-h-0">
+        <div className="flex-shrink-0 border-r border-black/10 bg-white flex flex-col overflow-hidden" style={{ width: leftWidth }}>
+          <div className="flex items-center gap-0.5 px-1.5 py-1 border-b border-black/5 flex-shrink-0">
+            <button
+              onClick={() => setLeftMode('source')}
+              className={`flex items-center gap-1 px-2 py-1 text-xs rounded transition-colors ${
+                leftMode === 'source'
+                  ? 'bg-black/5 text-black font-medium'
+                  : 'text-black/40 hover:text-black/60 hover:bg-black/5'
+              }`}
+            >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+              源码
+            </button>
+            {hasFiles && (
+              <button
+                onClick={() => setLeftMode('files')}
+                className={`flex items-center gap-1 px-2 py-1 text-xs rounded transition-colors ${
+                  leftMode === 'files'
+                    ? 'bg-black/5 text-black font-medium'
+                    : 'text-black/40 hover:text-black/60 hover:bg-black/5'
+                }`}
+              >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                </svg>
+                文件
+              </button>
+            )}
           </div>
-          <YamlViewer value={yaml} highlightLine={yamlHighlightLine} />
+
+          {leftMode === 'source' ? (
+            <YamlViewer value={yaml} highlightLine={yamlHighlightLine} />
+          ) : (
+            <div className="flex-1 overflow-auto scroll-area">
+              {fileNames?.map((name) => (
+                <button
+                  key={name}
+                  onClick={() => handleFileSelect(name)}
+                  className={`w-full text-left px-3 py-2 text-sm border-b border-black/5 transition-colors ${
+                    name === activeFile
+                      ? 'bg-black/[0.03] text-black font-medium'
+                      : 'text-black/60 hover:bg-black/5'
+                  }`}
+                >
+                  {label(name)}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div
-          className="w-1.5 bg-transparent hover:bg-gray-300 cursor-col-resize flex-shrink-0 transition-colors select-none"
+          className="w-1.5 bg-transparent hover:bg-black/10 cursor-col-resize flex-shrink-0 transition-colors select-none"
           onMouseDown={onResizeStart}
         />
 
         <div className="flex-1 min-w-0 overflow-hidden flex">
           {initialDoc ? (
             <>
-              <DocPreview doc={initialDoc} onScroll={setPreviewScrollTop} />
+              <DocPreview doc={initialDoc} onScroll={setPreviewScrollTop} onEndpointClick={handleEndpointClick} />
               <SidebarNav
                 endpoints={initialDoc.endpoints}
                 scrollTop={previewScrollTop}
@@ -165,7 +230,7 @@ export default function AppLayout({ initialDoc, yaml }: Props) {
               />
             </>
           ) : (
-            <div className="flex items-center justify-center h-full w-full text-gray-400 text-sm">
+            <div className="flex items-center justify-center h-full w-full text-black/40 text-sm">
               加载 swagger.yaml ...
             </div>
           )}

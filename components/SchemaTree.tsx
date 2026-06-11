@@ -9,7 +9,7 @@ const TYPE_COLORS: Record<string, string> = {
   number: 'text-blue-600 bg-blue-50',
   boolean: 'text-orange-600 bg-orange-50',
   array: 'text-cyan-600 bg-cyan-50',
-  object: 'text-gray-600 bg-gray-100',
+  object: 'text-black/60 bg-black/5',
 }
 
 interface SchemaTreeProps {
@@ -34,7 +34,7 @@ function SchemaNodeRow({ node, depth }: { node: SchemaNode; depth: number }) {
   const hasVariants = node.variants && node.variants.length > 0
   const isExpandable = hasChildren || hasVariants
 
-  const typeColor = TYPE_COLORS[node.type] || 'text-gray-500 bg-gray-50'
+  const typeColor = TYPE_COLORS[node.type] || 'text-black/50 bg-black/[0.02]'
 
   return (
     <div className="schema-node">
@@ -46,7 +46,7 @@ function SchemaNodeRow({ node, depth }: { node: SchemaNode; depth: number }) {
           {isExpandable ? (
             <button
               onClick={() => setCollapsed(!collapsed)}
-              className="flex-shrink-0 w-4 h-4 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+              className="flex-shrink-0 w-4 h-4 flex items-center justify-center text-black/40 hover:text-black/60 transition-colors"
             >
               <svg
                 width="10"
@@ -71,23 +71,23 @@ function SchemaNodeRow({ node, depth }: { node: SchemaNode; depth: number }) {
           {node.required ? (
             <span className="text-[11px] text-red-600 bg-red-50 px-1.5 py-0.5 rounded font-medium">required</span>
           ) : (
-            <span className="text-[11px] text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded">optional</span>
+            <span className="text-[11px] text-black/40 bg-black/[0.02] px-1.5 py-0.5 rounded">optional</span>
           )}
 
           {node.enum && node.enum.length > 0 && (
-            <span className="text-[11px] text-gray-400">
-              Enum: <code className="text-gray-600">{node.enum.join(', ')}</code>
+            <span className="text-[11px] text-black/40">
+              Enum: <code className="text-black/60">{node.enum.join(', ')}</code>
             </span>
           )}
 
           {node.default !== undefined && (
-            <span className="text-[11px] text-gray-400">
-              Default: <code className="text-gray-600">{node.default}</code>
+            <span className="text-[11px] text-black/40">
+              Default: <code className="text-black/60">{node.default}</code>
             </span>
           )}
 
           {node.description && (
-            <span className="text-[11px] text-gray-400 truncate hidden sm:inline">{node.description}</span>
+            <span className="text-[11px] text-black/40 truncate hidden sm:inline">{node.description}</span>
           )}
         </div>
       </div>
@@ -99,7 +99,7 @@ function SchemaNodeRow({ node, depth }: { node: SchemaNode; depth: number }) {
           ))}
           {hasVariants && (
             <div className="schema-node-variants">
-              <div className="text-[11px] text-gray-400 font-medium uppercase tracking-wider mt-1 mb-1" style={{ paddingLeft: `${(depth + 1) * 20}px` }}>
+              <div className="text-[11px] text-black/40 font-medium uppercase tracking-wider mt-1 mb-1" style={{ paddingLeft: `${(depth + 1) * 20}px` }}>
                 oneOf
               </div>
               {node.variants!.map((variant, i) => (

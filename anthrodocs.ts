@@ -7,9 +7,8 @@ export { default as SchemaTree } from './components/SchemaTree'
 export { default as ParametersTable } from './components/ParametersTable'
 export { default as JsonExample } from './components/JsonExample'
 
-export { parseSpecFromString } from './lib/parser.js'
+export { parseSpecFromString } from './lib/parser-string.js'
 export { findEndpointLines, groupParamsByIn } from './lib/utils'
-export { createAnthrodocsPage } from './create-page'
 
 export type {
   ApiDoc,

@@ -1,0 +1,121 @@
+---
+title: Usage Logs
+description: Track and analyze your API usage with detailed request logs
+group: Guides
+order: 4
+---
+
+# Usage Logs
+
+The Usage Logs page provides a detailed, filterable history of every API request you've made. Use it to audit spending, debug issues, and understand your consumption patterns.
+
+## Accessing Logs
+
+Navigate to **Usage Logs** (or **Logs**) in the sidebar to view your request history.
+
+## Filtering Logs
+
+Use the filter bar at the top to narrow down results:
+
+| Filter | Description |
+|--------|-------------|
+| **Token Name** | Filter by API key name |
+| **Model Name** | Filter by model identifier |
+| **Request ID** | Look up a specific request by its unique ID |
+| **Group** | Filter by access group |
+| **Type** | Filter by request type: Chat, Edit, Image, Audio, or Error |
+| **Date Range** | Set start and end dates (defaults to the last 7 days) |
+
+Click **Reset** to clear all filters and return to the default view.
+
+## Log Table Columns
+
+Each row in the log table represents one API request:
+
+| Column | Description |
+|--------|-------------|
+| **Time** | When the request was made |
+| **Token** | The API key name used for the request |
+| **Model** | The model that processed the request |
+| **Group** | The access group assigned to the API key |
+| **Type** | Request type (Chat, Edit, Image, Audio, Error) |
+| **Prompt** | Number of tokens in the input |
+| **Completion** | Number of tokens in the output |
+| **Cost** | The cost of the request in USD |
+| **Duration** | How long the request took to complete |
+| **Channel** | The backend channel that handled the request |
+
+The table is server-side paginated. Use the pagination controls at the bottom to navigate through pages.
+
+## Expanding a Log Entry
+
+Click the expand button on any row to see detailed information:
+
+### Basic Details
+
+- **Time** — Full timestamp of the request
+- **Username** — The user who made the request
+- **Prompt Tokens** — Exact number of input tokens
+- **Completion Tokens** — Exact number of output tokens
+
+### Billing Details
+
+The billing details section shows the full cost calculation:
+
+```
+(Input Tokens / 1,000,000 x Input Price) + (Output Tokens / 1,000,000 x Output Price) x Group Ratio = Total Cost
+```
+
+- **Input Price** — Per-million-token rate for input
+- **Output Price** — Per-million-token rate for output
+- **Group Ratio** — The multiplier applied based on your API key's group
+- **Total Cost** — The final charge in USD
+
+### Request Metadata
+
+- **Channel** — Which backend provider handled the request
+- **IP Address** — The IP from which the request originated
+- **Request ID** — Unique identifier for troubleshooting
+- **Request Path** — The endpoint that was called
+- **Stream** — Whether the request used streaming
+- **Request Format** — The format of the request body
+- **Billing Mode** — How the request was billed
+
+### Content Preview
+
+A preview of the request content (truncated to 500 characters). This helps you identify what was sent without exposing full conversations.
+
+## Request Types
+
+| Type | Description |
+|------|-------------|
+| **Chat** | Standard chat completion request |
+| **Edit** | Text editing/modification request |
+| **Image** | Image generation request |
+| **Audio** | Speech or audio processing request |
+| **Error** | Failed request (no charge applied) |
+
+## Common Use Cases
+
+### Auditing Spending
+
+1. Set the date range to the billing period you want to review
+2. Sort by **Cost** to find the most expensive requests
+3. Expand individual entries to see the full billing breakdown
+4. Use the **Model Name** filter to see spending per model
+
+### Debugging Issues
+
+1. Filter by **Type: Error** to see all failed requests
+2. Use **Request ID** to look up a specific failed request reported by your application
+3. Check the **Channel** and **Duration** columns to identify latency or availability issues
+
+### Optimizing Costs
+
+1. Filter by a specific model to see how much it's costing you
+2. Compare **Prompt** and **Completion** token counts to find opportunities to reduce input size
+3. Check if switching to a cheaper model for certain tasks would save money using the [Model Hub](/docs/user-guide/model-hub)
+
+---
+
+For a higher-level view of your spending, visit the [Billing](/docs/user-guide/billing) page.

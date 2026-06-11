@@ -65,7 +65,7 @@ export default function JsonExample({ tree }: Props) {
   return (
     <div className="mt-2 mb-3">
       <button
-        className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 transition-colors mb-1"
+        className="flex items-center gap-1.5 text-xs text-black/40 hover:text-black/60 transition-colors mb-1"
         onClick={() => setCollapsed(!collapsed)}
       >
         <svg
@@ -79,7 +79,7 @@ export default function JsonExample({ tree }: Props) {
         示例
       </button>
       {!collapsed && (
-        <pre className="bg-gray-50 border border-gray-200 rounded-lg p-4 overflow-x-auto text-xs leading-relaxed text-gray-700 font-mono">
+        <pre className="bg-black/[0.02] border border-black/10 rounded-lg p-4 overflow-x-auto text-xs leading-relaxed text-black/70 font-mono">
           <code>{json}</code>
         </pre>
       )}

@@ -1,0 +1,40 @@
+/* Anthrodocs custom styles — import this in your layout.tsx */
+/* 可用作 Tailwind 插件形式，直接导入即可 */
+
+.method-get { color: #166534; background: #dcfce7; }
+.method-post { color: #1e40af; background: #dbeafe; }
+.method-put { color: #92400e; background: #fef3c7; }
+.method-delete { color: #991b1b; background: #fee2e2; }
+.method-patch { color: #6b21a8; background: #f3e8ff; }
+
+.status-ok { color: #166534; background: #dcfce7; }
+.status-redirect { color: #92400e; background: #fef3c7; }
+.status-error { color: #991b1b; background: #fee2e2; }
+
+.scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.scroll-area:hover {
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+.scroll-area::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-area::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 3px;
+}
+
+.scroll-area:hover::-webkit-scrollbar-thumb,
+.scroll-area:active::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+}

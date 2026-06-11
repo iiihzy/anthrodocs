@@ -1,0 +1,105 @@
+---
+title: Playground
+description: Test and experiment with models interactively on TokenGO
+group: Guides
+order: 3
+---
+
+# Playground
+
+The Playground lets you test models interactively before integrating them into your application. It provides a chat-like interface with configurable parameters, so you can experiment with different models and settings without writing code.
+
+## Getting Started
+
+1. Navigate to **Playground** in the sidebar
+2. If this is your first time, the Playground will check that you have a model and API key selected
+3. If you don't have an API key yet, the Playground can automatically create one for you
+
+## Configuration Panel
+
+On the left side (desktop) or in the slide-out drawer (mobile), you'll find the configuration panel.
+
+### Model Selection
+
+Click the model dropdown to select which model to use. You can search by name to quickly find a specific model. The list includes all models available to your account.
+
+### API Key Selection
+
+Select which API key to use for the request. Each key shows its name and assigned group. The Playground will create a temporary key named `Playground-xxxxxx` with unlimited quota if you don't have one.
+
+### System Prompt
+
+Enter a system prompt to set the behavior and personality of the AI. This is equivalent to the `system` message in the Chat Completions format.
+
+For example:
+
+```
+You are a helpful coding assistant. Always provide concise, working code examples.
+```
+
+### Advanced Settings
+
+Expand the **Advanced Settings** section to fine-tune model behavior:
+
+| Parameter | Range | Default | Description |
+|-----------|-------|---------|-------------|
+| **Temperature** | 0 – 2 | 0.7 | Controls randomness. Lower = more deterministic, higher = more creative |
+| **Top P** | 0 – 1 | 1 | Nucleus sampling — limits token selection to the top probability mass |
+| **Frequency Penalty** | -2 – 2 | 0 | Reduces repetition of tokens that have already appeared |
+| **Presence Penalty** | -2 – 2 | 0 | Encourages the model to talk about new topics |
+| **Max Tokens** | 1 – 4096 | 2048 | Maximum number of tokens in the model's response |
+
+## Chatting with Models
+
+### Sending Messages
+
+1. Type your message in the input box at the bottom
+2. Press **Enter** to send, or **Shift+Enter** to add a new line
+3. The model responds with streaming output — you'll see the text appear in real time
+
+### Understanding Responses
+
+- **User messages** appear on the right side with a blue background
+- **AI responses** appear on the left side with a gray background
+- AI responses support **Markdown rendering**, including code blocks, lists, tables, and more
+
+### Thinking Models
+
+Some models (like DeepSeek R1, OpenAI o1, and o3) support an extended thinking mode. When these models reason through a problem, you'll see an amber **Thinking** section that you can expand or collapse. This shows the model's chain-of-thought reasoning before the final answer.
+
+### Clearing the Conversation
+
+Click **Clear Conversation** in the configuration panel to reset the chat history and start fresh. This is useful when switching between different tasks or system prompts.
+
+## Tips for Effective Use
+
+### Finding the Right Temperature
+
+| Temperature | Best For |
+|-------------|----------|
+| 0 | Factual answers, code generation, data extraction |
+| 0.3 – 0.7 | Balanced conversation, general Q&A |
+| 0.7 – 1.0 | Creative writing, brainstorming |
+| 1.0 – 2.0 | Experimental, highly varied outputs |
+
+### Using System Prompts Effectively
+
+A good system prompt sets clear expectations:
+
+- **Define the role**: "You are a senior Python developer..."
+- **Specify the format**: "Respond in bullet points..."
+- **Set constraints**: "Keep answers under 200 words..."
+- **Provide context**: "The user is a beginner who..."
+
+### Testing Before Integrating
+
+The Playground is the ideal place to:
+
+1. Compare how different models respond to the same prompt
+2. Tune temperature and other parameters for your use case
+3. Verify that a model supports the features you need (streaming, tools, vision)
+4. Test edge cases and error handling
+
+---
+
+Once you've found the right model and settings, check [Quick Start](/docs/getting-started/quickstart) to integrate them into your code.

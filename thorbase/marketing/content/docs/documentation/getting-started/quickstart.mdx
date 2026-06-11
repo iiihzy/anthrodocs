@@ -1,0 +1,116 @@
+---
+title: Quick Start
+description: Get started with TokenGO in minutes
+group: Documentation
+order: 2
+---
+
+# Quick Start
+
+This guide walks you through setting up TokenGO and sending your first API request.
+
+## Step 1: Create an Account
+
+1. Go to [TokenGO Console](https://console.thorbase.com)
+2. Sign up with your email or use GitHub/Google OAuth
+3. Verify your email address
+
+## Step 2: Top Up Your Balance
+
+Before making API requests, you need balance in your account:
+
+1. Navigate to **Billing** in the sidebar
+2. Click **Top Up** to open the payment dialog
+3. Select a preset amount ($10, $20, $50, $100, $200, $500) or enter a custom amount
+4. Complete the Stripe payment
+5. Your balance updates immediately after payment
+
+## Step 3: Create an API Key
+
+1. Navigate to **API Keys** in the sidebar
+2. Click **Create Key**
+3. Enter a name for your key (e.g., `my-first-key`)
+4. Choose whether the key has unlimited or limited quota
+5. Set an expiration date or toggle **Never Expire**
+6. Click **Create** — your API key will be displayed once. **Copy it now**, you won't be able to see it again.
+
+Set it as an environment variable:
+
+```bash
+export THORBASE_API_KEY="your_api_key_here"
+```
+
+## Step 4: Send Your First Request
+
+TokenGO is compatible with the OpenAI API format. Use any OpenAI SDK or make a direct HTTP request:
+
+```bash
+curl https://api.thorbase.com/v1/chat/completions \
+  -H "Authorization: Bearer $THORBASE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-4o-mini",
+    "messages": [{"role": "user", "content": "Hello, TokenGO!"}]
+  }'
+```
+
+## Step 5: Integrate with Your Code
+
+### Python (OpenAI SDK)
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="your_api_key",
+    base_url="https://api.thorbase.com/v1"
+)
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+
+print(response.choices[0].message.content)
+```
+
+### TypeScript (OpenAI SDK)
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.THORBASE_API_KEY,
+  baseURL: "https://api.thorbase.com/v1",
+});
+
+const response = await client.chat.completions.create({
+  model: "gpt-4o-mini",
+  messages: [{ role: "user", content: "Hello!" }],
+});
+
+console.log(response.choices[0].message.content);
+```
+
+### Java (OpenAI-compatible client)
+
+```java
+// Use any OpenAI-compatible Java client
+// Set base URL to: https://api.thorbase.com/v1
+// Set API key to: your_api_key
+```
+
+### Go (OpenAI-compatible client)
+
+```go
+// Use any OpenAI-compatible Go client
+// Set base URL to: https://api.thorbase.com/v1
+// Set API key to: your_api_key
+```
+
+## Next Steps
+
+- [Model Hub](/docs/user-guide/model-hub) — Browse all available models and pricing
+- [Playground](/docs/user-guide/playground) — Test models interactively
+- [Billing](/docs/user-guide/billing) — Understand your spending and top up
+- [Usage Logs](/docs/user-guide/usage-logs) — Track your API usage in detail

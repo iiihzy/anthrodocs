@@ -20,13 +20,13 @@ export default function YamlViewer({ value, highlightLine }: Props) {
   }, [highlightLine])
 
   return (
-    <div ref={containerRef} className="flex-1 min-h-0 overflow-auto bg-gray-50 scroll-area">
-      <pre className="p-4 text-xs font-mono leading-relaxed text-gray-700 select-text whitespace-pre">
+    <div ref={containerRef} className="flex-1 min-h-0 overflow-auto bg-black/[0.02] scroll-area">
+      <pre className="p-4 text-xs font-mono leading-relaxed text-black/70 select-text whitespace-pre">
         {lines.map((line, i) => (
           <div
             key={i}
             data-yaml-line={i}
-            className={`${highlightLine === i ? 'bg-indigo-100 -mx-4 px-4' : ''}`}
+            className={`${highlightLine === i ? 'bg-black/10 -mx-4 px-4' : ''}`}
           >
             {line}
           </div>

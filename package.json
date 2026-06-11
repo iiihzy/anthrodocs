@@ -11,6 +11,10 @@
       "import": "./dist/anthrodocs.js",
       "types": "./dist/anthrodocs.d.ts"
     },
+    "./server": {
+      "import": "./dist/server.js",
+      "types": "./dist/server.d.ts"
+    },
     "./styles.css": "./dist/styles.css"
   },
   "files": [
